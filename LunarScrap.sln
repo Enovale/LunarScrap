@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LunarScrap", "LunarScrap.csproj", "{1B821C11-58B2-4A20-AC5B-1DF8D262F08C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B821C11-58B2-4A20-AC5B-1DF8D262F08C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B821C11-58B2-4A20-AC5B-1DF8D262F08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B821C11-58B2-4A20-AC5B-1DF8D262F08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B821C11-58B2-4A20-AC5B-1DF8D262F08C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0222165-D109-42E4-8A17-193B0F72EE86}
+	EndGlobalSection
+EndGlobal
