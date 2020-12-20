@@ -57,7 +57,10 @@ namespace LunarScrap
                     lunarCard.spawnCard.prefab.transform.SetPositionAndRotation(new UnityEngine.Vector3(0, -1000, 0), new UnityEngine.Quaternion());
 
                     lunarCard.spawnCard.prefab.GetComponent<PurchaseInteraction>().costType = CostTypeIndex.LunarItemOrEquipment;
-                    lunarCard.spawnCard.prefab.GetComponent<ShopTerminalBehavior>().itemTier = ItemTier.Lunar;
+
+                    var shop = lunarCard.spawnCard.prefab.GetComponent<ShopTerminalBehavior>();
+                    shop.itemTier = ItemTier.Lunar;
+                    shop.dropTable = new LunarDropTable();
 
                     var newCardArray = new DirectorCard[dupCategory.cards.Length + 1];
                     dupCategory.cards.CopyTo(newCardArray, 0);
@@ -77,8 +80,8 @@ namespace LunarScrap
         {
             public override PickupIndex GenerateDrop(Xoroshiro128Plus rng)
             {
-                var equip = Run.instance.availableLunarDropList.Where(x => PickupCatalog.GetPickupDef(x).equipmentIndex != EquipmentIndex.None).ToArray();
-                return equip[rng.RangeInt(0, equip.Count())];
+                var items = Run.instance.availableLunarDropList.Where(x => PickupCatalog.GetPickupDef(x).itemIndex != ItemIndex.None).ToArray();
+                return items[rng.RangeInt(0, items.Count())];
             }
         }
     }
