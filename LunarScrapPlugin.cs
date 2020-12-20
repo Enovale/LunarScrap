@@ -15,7 +15,7 @@ namespace LunarScrap
     {
         public const string ModName = "LunarScrap";
         public const string ModGuid = "com.Windows10CE.LunarScrap";
-        public const string ModVer = "1.0.0";
+        public const string ModVer = "1.1.0";
 
 
 
