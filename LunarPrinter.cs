@@ -27,7 +27,12 @@ namespace LunarScrap
                         spawnCard = new SpawnCard
                         {
                             name = "DuplicatorLunar",
+#if RELEASE
                             directorCreditCost = 10,
+#endif
+#if DEBUG
+                            directorCreditCost = 1,
+#endif
                             forbiddenFlags = copySpawnCard.forbiddenFlags,
                             hullSize = copySpawnCard.hullSize,
                             nodeGraphType = copySpawnCard.nodeGraphType,
@@ -36,7 +41,12 @@ namespace LunarScrap
                             requiredFlags = copySpawnCard.requiredFlags,
                             sendOverNetwork = copySpawnCard.sendOverNetwork
                         },
+#if RELEASE
                         selectionWeight = 1,
+#endif
+#if DEBUG
+                        selectionWeight = 100000,
+#endif
                         spawnDistance = copyCard.spawnDistance,
                         allowAmbushSpawn = copyCard.allowAmbushSpawn,
                         preventOverhead = copyCard.preventOverhead,
