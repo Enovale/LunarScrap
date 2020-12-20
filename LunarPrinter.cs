@@ -54,6 +54,7 @@ namespace LunarScrap
                         requiredUnlockable = copyCard.requiredUnlockable,
                         forbiddenUnlockable = copyCard.forbiddenUnlockable
                     };
+                    lunarCard.spawnCard.prefab.transform.SetPositionAndRotation(new UnityEngine.Vector3(0, -1000, 0), new UnityEngine.Quaternion());
 
                     lunarCard.spawnCard.prefab.GetComponent<PurchaseInteraction>().costType = CostTypeIndex.LunarItemOrEquipment;
                     lunarCard.spawnCard.prefab.GetComponent<ShopTerminalBehavior>().itemTier = ItemTier.Lunar;
