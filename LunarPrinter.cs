@@ -1,11 +1,6 @@
-﻿using BepInEx;
-using System.Linq;
+﻿using System.Linq;
 using RoR2;
-using R2API;
-using R2API.Utils;
-using MonoMod.Cil;
-using Mono.Cecil.Cil;
-using System;
+using UnityEngine;
 
 namespace LunarScrap
 {
@@ -22,25 +17,25 @@ namespace LunarScrap
                     var copyCard = dupCategory.cards[0];
                     var copySpawnCard = copyCard.spawnCard;
 
-                    var lunarCard = new DirectorCard()
-                    {
-                        spawnCard = new SpawnCard
-                        {
-                            name = "DuplicatorLunar",
+                    SpawnCard spawnCard = ScriptableObject.CreateInstance<SpawnCard>();
+                    spawnCard.name = "DuplicatorLunar";
 #if RELEASE
-                            directorCreditCost = 10,
+                    spawnCard.directorCreditCost = 10;
 #endif
 #if DEBUG
-                            directorCreditCost = 1,
+                    spawnCard.directorCreditCost = 1;
 #endif
-                            forbiddenFlags = copySpawnCard.forbiddenFlags,
-                            hullSize = copySpawnCard.hullSize,
-                            nodeGraphType = copySpawnCard.nodeGraphType,
-                            occupyPosition = copySpawnCard.occupyPosition,
-                            prefab = UnityEngine.Object.Instantiate(copySpawnCard.prefab),
-                            requiredFlags = copySpawnCard.requiredFlags,
-                            sendOverNetwork = copySpawnCard.sendOverNetwork
-                        },
+                    spawnCard.forbiddenFlags = copySpawnCard.forbiddenFlags;
+                    spawnCard.hullSize = copySpawnCard.hullSize;
+                    spawnCard.nodeGraphType = copySpawnCard.nodeGraphType;
+                    spawnCard.occupyPosition = copySpawnCard.occupyPosition;
+                    spawnCard.prefab = UnityEngine.Object.Instantiate(copySpawnCard.prefab);
+                    spawnCard.requiredFlags = copySpawnCard.requiredFlags;
+                    spawnCard.sendOverNetwork = copySpawnCard.sendOverNetwork;
+
+                    var lunarCard = new DirectorCard()
+                    {
+                        spawnCard = spawnCard,
 #if RELEASE
                         selectionWeight = 1,
 #endif
@@ -51,8 +46,8 @@ namespace LunarScrap
                         allowAmbushSpawn = copyCard.allowAmbushSpawn,
                         preventOverhead = copyCard.preventOverhead,
                         minimumStageCompletions = copyCard.minimumStageCompletions,
-                        requiredUnlockable = copyCard.requiredUnlockable,
-                        forbiddenUnlockable = copyCard.forbiddenUnlockable
+                        requiredUnlockableDef = copyCard.requiredUnlockableDef,
+                        forbiddenUnlockableDef = copyCard.forbiddenUnlockableDef
                     };
                     lunarCard.spawnCard.prefab.transform.SetPositionAndRotation(new UnityEngine.Vector3(0, -1000, 0), new UnityEngine.Quaternion());
 
@@ -60,7 +55,7 @@ namespace LunarScrap
 
                     var shop = lunarCard.spawnCard.prefab.GetComponent<ShopTerminalBehavior>();
                     shop.itemTier = ItemTier.Lunar;
-                    shop.dropTable = new LunarDropTable();
+                    shop.dropTable = ScriptableObject.CreateInstance<LunarDropTable>();
 
                     var newCardArray = new DirectorCard[dupCategory.cards.Length + 1];
                     dupCategory.cards.CopyTo(newCardArray, 0);
