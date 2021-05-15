@@ -72,9 +72,9 @@ namespace LunarScrap
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdloc(4),
-                            x => x.MatchLdfld<ItemDef>("tier"),
-                            x => x.MatchLdcI4(3)
-                        );
+                x => x.MatchLdfld<ItemDef>("tier"),
+                x => x.MatchLdcI4(3)
+            );
 
             c.RemoveRange(4);
         }

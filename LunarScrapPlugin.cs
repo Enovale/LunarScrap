@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using RoR2;
 using RoR2.ContentManagement;
 
 namespace LunarScrap

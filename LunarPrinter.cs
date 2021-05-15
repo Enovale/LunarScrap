@@ -29,7 +29,7 @@ namespace LunarScrap
                     spawnCard.hullSize = copySpawnCard.hullSize;
                     spawnCard.nodeGraphType = copySpawnCard.nodeGraphType;
                     spawnCard.occupyPosition = copySpawnCard.occupyPosition;
-                    spawnCard.prefab = UnityEngine.Object.Instantiate(copySpawnCard.prefab);
+                    spawnCard.prefab = Object.Instantiate(copySpawnCard.prefab);
                     spawnCard.requiredFlags = copySpawnCard.requiredFlags;
                     spawnCard.sendOverNetwork = copySpawnCard.sendOverNetwork;
 
