@@ -1,0 +1,10 @@
+{
+    "name": "LunarScrap",
+    "version_number": "2.1.0",
+    "website_url": "https://github.com/Windows10CE/LunarScrap",
+    "description": "Adds lunar scrap and lunar printers that act the same as all other scraps and printers. Updated for the anniversary update!",
+    "dependencies": [
+        "bbepis-BepInExPack-5.4.9",
+        "Windows10CE-ModCommon-2.0.0"
+    ]
+}

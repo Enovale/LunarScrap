@@ -73,10 +73,22 @@ namespace LunarScrap
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdloc(4),
                 x => x.MatchLdfld<ItemDef>("tier"),
-                x => x.MatchLdcI4(3)
+                x => x.MatchLdcI4(3),
+                x => x.MatchBeq(out _)
             );
 
             c.RemoveRange(4);
+
+            if (LunarScrapPlugin.BypassRemovableCheck.Value)
+            {
+                if (!c.Next.Next.MatchLdfld(AccessTools.Field(typeof(ItemDef), nameof(ItemDef.canRemove))))
+                {
+                    LunarScrapPlugin.Logger.LogWarning("Wasn't able to bypass the canRemove check");
+                    return;
+                }
+
+                c.RemoveRange(3);
+            }
         }
 
         [HarmonyILManipulator]
@@ -92,6 +104,10 @@ namespace LunarScrap
             );
             c.Emit(OpCodes.Ldloc_1);
             var toLabel = c.Previous;
+            foreach (var inLabel in c.IncomingLabels)
+            {
+                inLabel.Target = toLabel;
+            }
             c.Emit(OpCodes.Ldloc_0);
             c.EmitDelegate<Func<ItemDef, PickupIndex, PickupIndex>>((ItemDef item, PickupIndex orig) =>
             {
@@ -100,10 +116,6 @@ namespace LunarScrap
                 return orig;
             });
             c.Emit(OpCodes.Stloc_0);
-            foreach (var inLabel in c.IncomingLabels)
-            {
-                inLabel.Target = toLabel;
-            }
         }
 
 

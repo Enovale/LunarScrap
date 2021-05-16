@@ -19,12 +19,7 @@ namespace LunarScrap
 
                     SpawnCard spawnCard = ScriptableObject.CreateInstance<SpawnCard>();
                     spawnCard.name = "DuplicatorLunar";
-#if RELEASE
-                    spawnCard.directorCreditCost = 10;
-#endif
-#if DEBUG
-                    spawnCard.directorCreditCost = 1;
-#endif
+                    spawnCard.directorCreditCost = LunarScrapPlugin.CreditCost.Value;
                     spawnCard.forbiddenFlags = copySpawnCard.forbiddenFlags;
                     spawnCard.hullSize = copySpawnCard.hullSize;
                     spawnCard.nodeGraphType = copySpawnCard.nodeGraphType;
@@ -36,12 +31,7 @@ namespace LunarScrap
                     var lunarCard = new DirectorCard()
                     {
                         spawnCard = spawnCard,
-#if RELEASE
-                        selectionWeight = 1,
-#endif
-#if DEBUG
-                        selectionWeight = 100000,
-#endif
+                        selectionWeight = LunarScrapPlugin.SelectionWeight.Value,
                         spawnDistance = copyCard.spawnDistance,
                         allowAmbushSpawn = copyCard.allowAmbushSpawn,
                         preventOverhead = copyCard.preventOverhead,
