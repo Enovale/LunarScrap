@@ -3,52 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>Libs\0Harmony.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>Libs\stubs\Assembly-CSharp.refstub.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>Libs\BepInEx.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="HGCSharpUtils">
-      <HintPath>Libs\HGCSharpUtils.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="ModCommon">
-      <HintPath>Libs\ModCommon.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>Libs\Mono.Cecil.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="MonoMod.Utils">
-      <HintPath>Libs\MonoMod.Utils.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>Libs\UnityEngine.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>Libs\UnityEngine.AssetBundleModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>Libs\UnityEngine.CoreModule.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Libs\UnityEngine.Networking.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <PackageReference Include="BepInEx.Core" Version="5.4.19" />
+    <PackageReference Include="R2API" Version="4.2.1" />
+    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.1-r.1" />
+    <PackageReference Include="UnityEngine.Modules" Version="2019.4.26" />
   </ItemGroup>
 
   <ItemGroup>

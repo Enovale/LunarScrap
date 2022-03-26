@@ -2,16 +2,17 @@
 using BepInEx.Logging;
 using BepInEx.Configuration;
 using HarmonyLib;
-using RoR2;
+using R2API;
+using R2API.Utils;
 using RoR2.ContentManagement;
 
 namespace LunarScrap
 {
     [BepInPlugin(ModGuid, ModName, ModVer)]
+    [NetworkCompatibility]
+    [BepInDependency(R2API.R2API.PluginGUID)]
+    [R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI))]
     [HarmonyPatch]
-
-    [BepInDependency(ModCommon.ModCommonPlugin.ModGUID, BepInDependency.DependencyFlags.HardDependency)]
-    [ModCommon.NetworkModlistInclude]
     public class LunarScrapPlugin : BaseUnityPlugin
     {
         public const string ModName = "LunarScrap";
@@ -28,11 +29,11 @@ namespace LunarScrap
 
         public void Awake()
         {
-            LunarScrapPlugin.Logger = base.Logger;
+            Logger = base.Logger;
 
-            BypassRemovableCheck = Config.Bind<bool>("Workarounds", nameof(BypassRemovableCheck), false, "Some lunar items say they can't be removed by scrappers, this will bypass that for lunar items. (Don't use this if you aren't sure you need to.)");
-            CreditCost = Config.Bind<int>("LunarPrinter", nameof(CreditCost), 10, "Credit cost for the director, change this if you think the printer spawns too little/too much");
-            SelectionWeight = Config.Bind<int>("LunarPrinter", nameof(SelectionWeight), 1, "Selection weight for the director, change this if you think the printer spawns too little/too much");
+            BypassRemovableCheck = Config.Bind("Workarounds", nameof(BypassRemovableCheck), false, "Some lunar items say they can't be removed by scrappers, this will bypass that for lunar items. (Don't use this if you aren't sure you need to.)");
+            CreditCost = Config.Bind("LunarPrinter", nameof(CreditCost), 10, "Credit cost for the director, change this if you think the printer spawns too little/too much");
+            SelectionWeight = Config.Bind("LunarPrinter", nameof(SelectionWeight), 1, "Selection weight for the director, change this if you think the printer spawns too little/too much");
 
             HarmonyInstance = Harmony.CreateAndPatchAll(typeof(LunarScrapPlugin).Assembly, ModGuid);
 

@@ -4,9 +4,9 @@ using RoR2;
 using RoR2.ContentManagement;
 using HarmonyLib;
 using UnityEngine;
-using ModCommon;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
+using R2API;
 
 namespace LunarScrap
 {
@@ -25,12 +25,12 @@ namespace LunarScrap
         {
             assetBundle = AssetBundle.LoadFromMemory(Properties.Resources.lunarscrap);
 
-            LanguageTokens.Add("ITEM_SCRAPLUNAR_NAME", "Item Scrap, Lunar");
-            LanguageTokens.Add("ITEM_SCRAPLUNAR_LORE", "No notes found.");
-            LanguageTokens.Add("ITEM_SCRAPLUNAR_DESC", "Does nothing. Prioritized when used with 3D printers.");
-            LanguageTokens.Add("ITEM_SCRAPLUNAR_PICKUP", "Does nothing. Prioritized when used with 3D printers.");
-
             LunarScrapDef = ScriptableObject.CreateInstance<ItemDef>();
+
+            LanguageAPI.Add("ITEM_SCRAPLUNAR_NAME", "Item Scrap, Lunar");
+            LanguageAPI.Add("ITEM_SCRAPLUNAR_LORE", "No notes found.");
+            LanguageAPI.Add("ITEM_SCRAPLUNAR_DESC", "Does nothing. Prioritized when used with 3D printers.");
+            LanguageAPI.Add("ITEM_SCRAPLUNAR_PICKUP", "Does nothing. Prioritized when used with 3D printers.");
 
             LunarScrapDef.canRemove = true;
             LunarScrapDef.descriptionToken = "ITEM_SCRAPLUNAR_DESC";
@@ -70,29 +70,31 @@ namespace LunarScrap
         {
             ILCursor c = new ILCursor(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(4),
-                x => x.MatchLdfld<ItemDef>("tier"),
-                x => x.MatchLdcI4(3),
-                x => x.MatchBeq(out _)
-            );
-
-            c.RemoveRange(4);
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdfld<ItemTierDef>(nameof(ItemTierDef.canScrap))))
+            {
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_I4_1);
+            }
 
             if (LunarScrapPlugin.BypassRemovableCheck.Value)
             {
-                if (!c.Next.Next.MatchLdfld(AccessTools.Field(typeof(ItemDef), nameof(ItemDef.canRemove))))
+                if (c.TryGotoNext(MoveType.After, x => x.MatchLdfld<ItemDef>(nameof(ItemDef.canRemove))))
+                {
+                    c.Emit(OpCodes.Pop);
+                    c.Emit(OpCodes.Ldc_I4_1);
+                }
+                else
                 {
                     LunarScrapPlugin.Logger.LogWarning("Wasn't able to bypass the canRemove check");
-                    return;
                 }
-
-                c.RemoveRange(3);
             }
+            
+            LunarScrapPlugin.Logger.LogInfo(il);
         }
 
         [HarmonyILManipulator]
-        [HarmonyPatch(typeof(EntityStates.Scrapper.ScrappingToIdle), nameof(EntityStates.Scrapper.ScrappingToIdle.OnEnter))]
+        [HarmonyPatch(typeof(EntityStates.Scrapper.ScrappingToIdle),
+            nameof(EntityStates.Scrapper.ScrappingToIdle.OnEnter))]
         private static void FixScrapperIL(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -108,6 +110,7 @@ namespace LunarScrap
             {
                 inLabel.Target = toLabel;
             }
+
             c.Emit(OpCodes.Ldloc_0);
             c.EmitDelegate<Func<ItemDef, PickupIndex, PickupIndex>>((ItemDef item, PickupIndex orig) =>
             {
@@ -120,7 +123,8 @@ namespace LunarScrap
 
 
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(CostTypeCatalog.LunarItemOrEquipmentCostTypeHelper), nameof(CostTypeCatalog.LunarItemOrEquipmentCostTypeHelper.PayCost))]
+        [HarmonyPatch(typeof(CostTypeCatalog.LunarItemOrEquipmentCostTypeHelper),
+            nameof(CostTypeCatalog.LunarItemOrEquipmentCostTypeHelper.PayCost))]
         private static bool FixLunarCostDef(ref CostTypeDef.PayCostContext context)
         {
             var inventory = context.activator.GetComponent<CharacterBody>().inventory;
@@ -130,6 +134,7 @@ namespace LunarScrap
                 context.results.itemsTaken.Add(LunarScrapDef.itemIndex);
                 return false;
             }
+
             return true;
         }
     }
